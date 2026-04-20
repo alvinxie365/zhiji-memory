@@ -21,10 +21,10 @@
 
 ---
 
-## 📖 文档（中英双语）
+## 📖 中英双语文档
 
 > 📄 **中英双语完整建造手册：**
-> https://feishu.cn/docx/Q0Uodru86oxCHAxoutmcIEJ6nJf
+> https://feishu.cn/docx/MKC0ddVyVoQEjsxU5koc6VR9nVc
 
 ---
 
@@ -91,38 +91,12 @@ memory.provider: zhiji_memory
 
 ---
 
-## 📁 目录结构
-
-```
-zhiji-memory/
-├── __init__.py                      # 插件入口
-├── plugin.yaml                       # 插件元信息
-├── zhiji_memory_provider.py          # 核心插件代码（~50KB）
-├── install.sh                       # 一键安装脚本
-├── UNINSTALL.sh                     # 卸载脚本
-├── README.md                        # 英文版
-├── README-zh.md                    # 中文版（本文件）
-└── skill-sea-of-consciousness.md    # Skill 文档（知识传递）
-```
-
----
-
 ## 👤 关于
 
 - **作者**：谢家·阿福X（Alvin Xie）
 - **来源**：谢家 Hermes Agent 的内生进化实验
-- **版本**：v1.0.0
-- **中英双语文档**：https://feishu.cn/docx/Q0Uodru86oxCHAxoutmcIEJ6nJf
-
----
-
-## 🛡️ 备份策略
-
-| 层次 | 位置 | 保护 |
-|------|------|------|
-| **每日备份** | `~/Backup/afu-daily/` | 7天循环，本地 |
-| **插件备份** | `~/.hermes/sea/plugin_backup/` | 升级前自动备份 |
-| **还原脚本** | `~/.hermes/sea/plugin_restore.sh` | 升级后一键还原 |
+- **版本**：v1.1.0
+- **中英双语文档**：https://feishu.cn/docx/MKC0ddVyVoQEjsxU5koc6VR9nVc
 
 ---
 

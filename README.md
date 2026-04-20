@@ -24,7 +24,7 @@ Zhiji Memory is an **endogenous memory system** for Hermes Agent, replacing old 
 ## 📖 Documentation (Bilingual)
 
 > 📄 **Chinese + English Bilingual Document:**
-> https://feishu.cn/docx/Q0Uodru86oxCHAxoutmcIEJ6nJf
+> https://feishu.cn/docx/MKC0ddVyVoQEjsxU5koc6VR9nVc
 
 The complete construction manual with both Chinese and English content.
 
@@ -91,6 +91,20 @@ memory.provider: zhiji_memory
 0 2 * * * bash ~/.hermes/scripts/afu-daily-backup.sh
 ```
 
+### LLM Configuration (Optional)
+
+LLM refinement is **optional**. Without it, Zhiji still works with rule-based precipitation.
+
+Supports any OpenAI-compatible API:
+
+| Env Var | Description |
+|---------|-------------|
+| `ZHIJI_LLM_API_KEY` | Dedicated key (highest priority) |
+| `ZHIJI_LLM_BASE_URL` | API endpoint |
+| `ZHIJI_LLM_MODEL` | Model name (`gpt-4o`, `claude-sonnet-4`, etc.) |
+| `OPENAI_API_KEY` | Standard OpenAI key |
+| `ANTHROPIC_API_KEY` | Anthropic key |
+
 ---
 
 ## 📁 Directory Structure
@@ -98,13 +112,14 @@ memory.provider: zhiji_memory
 ```
 zhiji-memory/
 ├── __init__.py                      # Plugin entry point
-├── plugin.yaml                       # Plugin metadata
+├── plugin.yaml                       # Plugin metadata (v1.1.0)
 ├── zhiji_memory_provider.py          # Core plugin code (~50KB)
 ├── install.sh                       # One-command install script
 ├── UNINSTALL.sh                     # Clean uninstall script
 ├── README.md                        # English version (this file)
 ├── README-zh.md                     # Chinese version
-└── skill-sea-of-consciousness.md    # Skill document (knowledge transfer)
+├── README-BILINGUAL.md              # Side-by-side bilingual edition
+└── skill-sea-of-consciousness.md     # Skill document
 ```
 
 ---
@@ -113,8 +128,9 @@ zhiji-memory/
 
 - **Created by**: Xie Family · 阿福X (Alvin Xie)
 - **Origin**: Endogenous evolution experiment of Xie Family Hermes Agent
-- **Version**: v1.0.0
+- **Version**: v1.1.0
 - **Chinese Doc**: https://feishu.cn/docx/Q0Uodru86oxCHAxoutmcIEJ6nJf
+- **Bilingual Doc**: https://feishu.cn/docx/MKC0ddVyVoQEjsxU5koc6VR9nVc
 
 ---
 
