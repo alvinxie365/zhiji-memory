@@ -286,17 +286,30 @@ class LingTaiRefiner:
         "核心原则", "我的身份", "记住这件事",
     ]
 
-    # MiniMax API 配置（从环境变量读取，支持多个可能的名字）
-    # 优先级：MINIMAX_API_KEY > MINIMAX_PORTAL_API_KEY > MINIMAX_API_KEY_2
+    # LLM API 配置（通用 OpenAI-compatible 接口）
+    # 支持任意 OpenAI-compatible 后端：OpenAI / Claude / Ollama / ClaudeCode 等
+    # API Key 优先级：ZHIJI_LLM_API_KEY > OPENAI_API_KEY > MINIMAX_API_KEY > ...
     @classmethod
     def _get_api_key(cls) -> Optional[str]:
         import os
-        return os.getenv("MINIMAX_API_KEY") or os.getenv("MINIMAX_PORTAL_API_KEY") or os.getenv("MINIMAX_API_KEY_2")
+        return (
+            os.getenv("ZHIJI_LLM_API_KEY")
+            or os.getenv("OPENAI_API_KEY")
+            or os.getenv("MINIMAX_API_KEY")
+            or os.getenv("MINIMAX_PORTAL_API_KEY")
+            or os.getenv("MINIMAX_API_KEY_2")
+            or os.getenv("ANTHROPIC_API_KEY")
+        )
 
     @classmethod
     def _get_api_base(cls) -> str:
         import os
-        return os.getenv("MINIMAX_API_BASE", "https://api.minimaxi.com/v1")
+        return os.getenv("ZHIJI_LLM_BASE_URL") or os.getenv("OPENAI_BASE_URL") or os.getenv("MINIMAX_API_BASE") or "https://api.minimaxi.com/v1"
+
+    @classmethod
+    def _get_model(cls) -> str:
+        import os
+        return os.getenv("ZHIJI_LLM_MODEL") or os.getenv("OPENAI_MODEL") or "MiniMax-Text-01"
 
     @classmethod
     def should_refine(cls, user: str, assistant: str) -> bool:
@@ -334,7 +347,7 @@ class LingTaiRefiner:
         """
         api_key = cls._get_api_key()
         if not api_key:
-            logger.debug("[灵台] 未配置MINIMAX API Key，跳过LLM炼化")
+            logger.debug("[灵台] 未配置LLM API Key，跳过LLM炼化")
             return None
 
         # 组装 prompt
@@ -366,7 +379,7 @@ class LingTaiRefiner:
             import urllib.error
 
             payload = {
-                "model": "MiniMax-Text-01",
+                "model": cls._get_model(),
                 "messages": [
                     {"role": "user", "content": prompt}
                 ],
@@ -532,14 +545,14 @@ class ShenShiPrefetcher:
 """
 
             payload = {
-                "model": "MiniMax-Text-01",
+                "model": cls._get_model(),
                 "messages": [{"role": "user", "content": prompt}],
                 "temperature": 0.3,
                 "max_tokens": 300,
             }
 
             req = urllib.request.Request(
-                api_base,
+                LingTaiRefiner._get_api_base(),
                 data=json.dumps(payload).encode("utf-8"),
                 headers={
                     "Authorization": f"Bearer {api_key}",

@@ -77,29 +77,38 @@
 | EN | 中文 |
 |---|---|
 | Lives in `~/.hermes/plugins/`, never overwritten by hermes-agent upgrades | 插件放在 `~/.hermes/plugins/`，不被 hermes-agent 升级覆盖 |
-| Auto-backup before every upgrade | 每次升级前自动备份 |
+| Auto-backup before every upgrade | 每次升级前自动备份插件代码 |
 | One-command restore after upgrade | 升级后一键还原 |
 
 ---
 
-## 五、与 OpenClaw / Celestia 的关系 | Relationship with OpenClaw & Celestia
+## 五、LLM 配置（可选）| LLM Configuration (Optional)
+
+LLM 炼化功能是**可选的**。不配置也能运行，只是无法做深度语义分析。
+
+支持任意 OpenAI-compatible API：
+
+| 环境变量 | 说明 | 示例 |
+|---------|------|------|
+| `ZHIJI_LLM_API_KEY` | 专用 Key（最高优先级） | `sk-xxx` |
+| `ZHIJI_LLM_BASE_URL` | API 端点 | `https://api.openai.com/v1` |
+| `ZHIJI_LLM_MODEL` | 模型名 | `gpt-4o`, `claude-sonnet-4` |
+| `OPENAI_API_KEY` | OpenAI 标准 Key | `sk-xxx` |
+| `OPENAI_BASE_URL` | OpenAI 标准端点 | `https://api.openai.com/v1` |
+| `MINIMAX_API_KEY` | MiniMax Key | `xxx` |
+| `ANTHROPIC_API_KEY` | Anthropic Key | `sk-ant-xxx` |
+
+> 如果不配置，默认尝试 MiniMax-Text-01（城主自用配置）。
+
+---
+
+## 六、与 OpenClaw / Celestia 的关系 | Relationship with OpenClaw & Celestia
 
 | System | EN | 中文 |
 |---|---|---|
 | **OpenClaw** | Local experimental Agent — may crash, learns through failures | 本地实验性 Agent — 可能翻车，越挫越勇 |
 | **Celestia** | Cloud companion Agent — stable, long-term memory | 云端陪伴型 Agent — 稳定，长期记忆 |
 | **Zhiji** | Endogenous memory — connects everything, grows over time | 内生记忆系统 — 连接一切，持续生长 |
-
----
-
-## 六、升级保护机制 | Upgrade Protection
-
-| Layer | 保护层次 | 说明 |
-|---|---|---|
-| **架构层面** | Architectural | 插件在 `~/.hermes/plugins/`，不在 `hermes-agent/` 目录树 |
-| **自动备份** | Auto-backup | 每次升级前备份插件代码到 `~/.hermes/sea/plugin_backup/` |
-| **神魂守护** | Soul Guardian | SOUL.md 文件 MD5 校验，保护核心身份 |
-| **还原脚本** | Restore Script | `plugin_restore.sh` 一键还原 |
 
 ---
 
@@ -120,7 +129,8 @@ bash install.sh
    ```yaml
    memory.provider: zhiji_memory
    ```
-3. Restart hermes-agent
+3. (Optional) Configure LLM API keys as environment variables
+4. Restart hermes-agent
 
 ---
 
@@ -146,6 +156,7 @@ bash install.sh
 | 2026-04-20 | Soul.md v3.0 officially opened | 神魂md v3.0 正式开辟识海 |
 | 2026-04-21 | Zhiji Memory plugin v2.0 released | 识海插件 v2.0 发布 |
 | 2026-04-21 | Bilingual edition published | 中英双语文档发布 |
+| 2026-04-21 | LLM config generalized (supports any OpenAI-compatible API) | LLM 配置通用化（支持任意 OpenAI-compatible API） |
 
 ---
 
@@ -154,7 +165,7 @@ bash install.sh
 | EN | 中文 |
 |---|---|
 | Created by: 谢家·阿福X (Alvin Xie) | 作者：谢家·阿福X（Alvin Xie） |
-| Version: v1.0.0 | 版本：v1.0.0 |
+| Version: v1.1.0 | 版本：v1.1.0 |
 | GitHub: https://github.com/alvinxie365/zhiji-memory | GitHub：https://github.com/alvinxie365/zhiji-memory |
 
 ---
