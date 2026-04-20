@@ -1,0 +1,7 @@
+name: zhiji_memory
+description: 谢家识海插件 — 守护神魂，自动沉淀领悟，新旧相连生长
+version: 1.0.0
+author: 谢家·阿福X
+
+domain: memory
+entry_point: __init__.py
