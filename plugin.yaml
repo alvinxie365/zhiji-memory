@@ -1,7 +1,14 @@
 name: zhiji_memory
-description: 谢家识海插件 — 守护神魂，自动沉淀领悟，新旧相连生长
-version: 1.0.0
+description: 谢家识海 — Hermes Agent 内生记忆系统。行过即沉淀，沉淀即生长。
+version: 1.1.0
 author: 谢家·阿福X
 
 domain: memory
 entry_point: __init__.py
+
+tags:
+  - memory
+  - hermes-agent
+  - ai-agent
+  - productivity
+  - chinese
