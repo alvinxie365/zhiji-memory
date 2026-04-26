@@ -4,8 +4,6 @@
 
 Zhiji Memory is an **endogenous memory system** for Hermes Agent, replacing old RAG/vector-search with a "Soul → Tidal Wave → Precipitation → Growth" architecture. It makes AI grow naturally through every conversation.
 
-**Built with love by [Xie Family](https://feishu.cn/docx/Q0Uodru86oxCHAxoutmcIEJ6nJf) · 谢家**
-
 ---
 
 ## ✨ Features
@@ -21,12 +19,10 @@ Zhiji Memory is an **endogenous memory system** for Hermes Agent, replacing old 
 
 ---
 
-## 📖 Documentation (Bilingual)
+## 📖 Documentation
 
-> 📄 **Chinese + English Bilingual Document:**
-> https://feishu.cn/docx/MKC0ddVyVoQEjsxU5koc6VR9nVc
-
-The complete construction manual with both Chinese and English content.
+> 📄 **Complete Documentation:**
+> https://github.com/alvinxie365/zhiji-memory/wiki
 
 ---
 
@@ -45,7 +41,8 @@ bash install.sh
 1. Copy `__init__.py`, `plugin.yaml`, `zhiji_memory_provider.py` to `~/.hermes/plugins/zhiji_memory/`
 2. Add to `config.yaml`:
    ```yaml
-   memory.provider: zhiji_memory
+   memory:
+     provider: zhiji_memory
    ```
 3. Restart hermes-agent
 
@@ -66,11 +63,11 @@ bash install.sh
 
 ```
 Zhiji Sea (识海)
-├── Soul Domain (soul)      — Core identity file SOUL.md checksum & protection
-├── Skills Domain (skills)  — Precipitated methodology, reusable skills
-├── Preferences Domain      — Work habits, aesthetic preferences
-├── Events Domain           — Project progress, milestones
-└── Evolution Domain       — Frontier expansion records, growth milestones
+├── Soul Domain (soul)          — Core identity file SOUL.md checksum & protection
+├── Skills Domain (skills)      — Precipitated methodology, reusable skills
+├── Preferences Domain (pref)   — User's work habits, aesthetic preferences
+├── Events Domain (event)       — Project progress, milestones
+└── Evolution Domain (growth)   — Frontier expansion records, growth milestones
 ```
 
 ---
@@ -81,14 +78,15 @@ Zhiji Sea (识海)
 
 ```yaml
 # ~/.hermes/config.yaml
-memory.provider: zhiji_memory
+memory:
+  provider: zhiji_memory
 ```
 
 ### Daily Self-Backup (Recommended)
 
 ```bash
 # Add cron job — runs at 2am daily
-0 2 * * * bash ~/.hermes/scripts/afu-daily-backup.sh
+0 2 * * * bash ~/.hermes/scripts/zhiji-daily-backup.sh
 ```
 
 ### LLM Configuration (Optional)
@@ -105,6 +103,8 @@ Supports any OpenAI-compatible API:
 | `OPENAI_API_KEY` | Standard OpenAI key |
 | `ANTHROPIC_API_KEY` | Anthropic key |
 
+> If not configured, Zhiji runs in rule-only mode (no LLM refinement).
+
 ---
 
 ## 📁 Directory Structure
@@ -112,25 +112,15 @@ Supports any OpenAI-compatible API:
 ```
 zhiji-memory/
 ├── __init__.py                      # Plugin entry point
-├── plugin.yaml                       # Plugin metadata (v1.1.0)
+├── plugin.yaml                       # Plugin metadata (v1.2.0)
 ├── zhiji_memory_provider.py          # Core plugin code (~50KB)
 ├── install.sh                       # One-command install script
 ├── UNINSTALL.sh                     # Clean uninstall script
 ├── README.md                        # English version (this file)
 ├── README-zh.md                     # Chinese version
 ├── README-BILINGUAL.md              # Side-by-side bilingual edition
-└── skill-sea-of-consciousness.md     # Skill document
+└── sea-of-consciousness.md          # Architecture document
 ```
-
----
-
-## 👤 About
-
-- **Created by**: Xie Family · 阿福X (Alvin Xie)
-- **Origin**: Endogenous evolution experiment of Xie Family Hermes Agent
-- **Version**: v1.1.0
-- **Chinese Doc**: https://feishu.cn/docx/Q0Uodru86oxCHAxoutmcIEJ6nJf
-- **Bilingual Doc**: https://feishu.cn/docx/MKC0ddVyVoQEjsxU5koc6VR9nVc
 
 ---
 
@@ -138,7 +128,7 @@ zhiji-memory/
 
 | Layer | Location | Protection |
 |-------|----------|------------|
-| **Daily Backup** | `~/Backup/afu-daily/` | 7-day rotation, local |
+| **Daily Backup** | `~/Backup/zhiji-daily/` | 7-day rotation, local |
 | **Plugin Backup** | `~/.hermes/sea/plugin_backup/` | Auto before every upgrade |
 | **Restore Script** | `~/.hermes/sea/plugin_restore.sh` | One-command restore after upgrade |
 

@@ -1,7 +1,7 @@
 name: zhiji_memory
-description: 谢家识海 — Hermes Agent 内生记忆系统。行过即沉淀，沉淀即生长。
-version: 1.1.0
-author: 谢家·阿福X
+description: 🔮 Zhiji Memory — Endogenous memory system for Hermes Agent. Auto-precipitation, auto-growth.
+version: 1.2.0
+author: Zhiji Community
 
 domain: memory
 entry_point: __init__.py

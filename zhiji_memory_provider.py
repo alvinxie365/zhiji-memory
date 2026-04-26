@@ -1,4 +1,4 @@
-"""谢家识海插件 — Zhiji Sea Memory Provider v2.0
+"""识海插件 — Zhiji Sea Memory Provider v2.0
 
 四境体系：
 - 炼气期：神魂稳固 + 识浪涌动
@@ -42,7 +42,7 @@ SOUL_BACKUP_PREFIX = "soul_"
 # 识海域定义
 DOMAIN_SOUL = "soul"        # 神魂根基 — 使命/边界/核心原则
 DOMAIN_SKILL = "skill"      # 技能沉淀 — 学会的事情
-DOMAIN_PREF = "pref"        # 城主偏好 — 习惯/风格/禁忌
+DOMAIN_PREF = "pref"        # 用户偏好 — 习惯/风格/禁忌
 DOMAIN_EVENT = "event"      # 事件记忆 — 做过的事情/项目
 DOMAIN_GROWTH = "growth"    # 进化印记 — 领悟/洞察/突破
 
@@ -275,7 +275,7 @@ class LingTaiRefiner:
 
     # 触发 LLM 炼化的"高质量对话"条件（规则预筛）
     HIGH_QUALITY_SIGNALS = [
-        "城主", "记住了", "学会了", "搞懂了", "不对", "不是这样",
+            "用户", "记住了", "学会了", "搞懂了", "不对", "不是这样",
         "以后都", "从来都", "满意", "不满意", "谢谢", "不对",
         "这就是", "原来", "我明白了", "不要", "不要再",
     ]
@@ -351,7 +351,7 @@ class LingTaiRefiner:
             return None
 
         # 组装 prompt
-        prompt = f"""你是谢家识海的灵台主控。
+        prompt = f"""你是识海的灵台主控。
 
 对话内容：
 用户：{user[:300]}
@@ -362,7 +362,7 @@ class LingTaiRefiner:
 2. 如果是，应该沉淀到哪个域？
    - soul（神魂根基）：使命/原则/边界/身份
    - skill（技能沉淀）：学会了方法/工具/流程
-   - pref（城主偏好）：喜欢/不喜欢/习惯/风格
+   - pref（用户偏好）：喜欢/不喜欢/习惯/风格
    - event（事件记忆）：具体项目/任务/做过的事
    - growth（进化印记）：领悟/洞察/认知突破
 
@@ -490,7 +490,7 @@ class ShenShiPrefetcher:
 
     机制：
     - 不只做关键词匹配，用 LLM 理解深层意图
-    - 主动判断城主这句话背后真正想问的是什么
+    - 主动判断用户这句话背后真正想问的是什么
     - 主动加载相关域，不只是被动匹配
     """
 
@@ -514,7 +514,7 @@ class ShenShiPrefetcher:
         用 LLM 做深层 prefetch 理解。
 
         Returns: {
-            "intention": str,           # 城主真正想问的
+            "intention": str,           # 用户真正想问的
             "domains_to_load": List[str],  # 应该加载哪些域
             "context_hints": List[str],    # 给模型的上下文提示
         }
@@ -527,16 +527,16 @@ class ShenShiPrefetcher:
         try:
             import urllib.request
 
-            prompt = f"""你是谢家识海的神识。
+            prompt = f"""你是识海的神识。
 
-城主说："{query}"
+用户说："{query}"
 
 请深层理解：
-1. 城主这句话背后真正想问的是什么？（真正意图）
+1. 用户这句话背后真正想问的是什么？（真正意图）
 2. 为了回答这个问题，识海应该提供哪些域的记忆？
    - soul（神魂根基）：使命/原则/边界
    - skill（技能沉淀）：工具/方法/流程
-   - pref（城主偏好）：习惯/风格/偏好
+   - pref（用户偏好）：习惯/风格/偏好
    - event（事件记忆）：项目/任务/做过的事
    - growth（进化印记）：领悟/洞察/认知
 
@@ -611,7 +611,7 @@ class FrontierDetector:
     机制：
     - 监测各域的沉淀密度（某话题反复出现）
     - 当某话题超过阈值，提议开辟新域
-    - 新域需要城主确认后开辟
+    - 新域需要用户确认后开辟
     - 自动维护域注册表（SEA_ROOT/domains/_registry.json）
     """
 
@@ -696,9 +696,7 @@ class FrontierDetector:
 
     @classmethod
     def approve_proposal(cls, proposal: Dict[str, Any]) -> bool:
-        """
-        城主确认开辟新域。
-        """
+        """用户确认开辟新域"""
         registry = cls.get_registry()
         new_name = proposal.get("suggested_name")
         if not new_name:
@@ -726,7 +724,7 @@ class FrontierDetector:
 
     @classmethod
     def reject_proposal(cls, proposal: Dict[str, Any]):
-        """城主拒绝开辟新域"""
+        """用户拒绝开辟新域"""
         registry = cls.get_registry()
         registry["proposed"] = [p for p in registry["proposed"]
                                 if p.get("suggested_name") != proposal.get("suggested_name")]
@@ -742,7 +740,7 @@ class AlchemyEngine:
 
     def __init__(self):
         self.master_signals = [
-            "城主", "谢孝苗", "满意", "不对", "不是这样",
+            "用户", "满意", "不对", "不是这样",
             "记住了", "不要再", "以后都", "从来都", "以后不要",
         ]
         self.insight_signals = [
@@ -981,10 +979,8 @@ class SeaStore:
 # ============================================================================
 # 主Provider — ZhijiMemoryProvider v2.0
 # ============================================================================
-
 class ZhijiMemoryProvider(MemoryProvider):
-    """
-    谢家识海插件 v2.0 — 四境完整体系
+    """识海插件 v2.0 — 四境完整体系
 
     四境机制：
     - 炼气期：神魂稳固(SoulGuardian) + 识浪涌动(RawWaveLogger)
@@ -1035,9 +1031,9 @@ class ZhijiMemoryProvider(MemoryProvider):
         proposals = FrontierDetector.get_pending_proposals()
         proposal_hint = f" | 📍 {len(proposals)}个新域待确认" if proposals else ""
 
-        return f"""[谢家识海 · {soul_label}]
+        return f"""[识海 · {soul_label}]
 识海共 {total} 条沉淀{proposal_hint}
-技能沉淀: {counts.get(DOMAIN_SKILL,0)} | 城主偏好: {counts.get(DOMAIN_PREF,0)} | 进化印记: {counts.get(DOMAIN_GROWTH,0)}
+技能沉淀: {counts.get(DOMAIN_SKILL,0)} | 用户偏好: {counts.get(DOMAIN_PREF,0)} | 进化印记: {counts.get(DOMAIN_GROWTH,0)}
 
 注：相关记忆在需要时会自然浮现。"""
 
@@ -1046,7 +1042,7 @@ class ZhijiMemoryProvider(MemoryProvider):
         神识初探 — 对话开始前加载相关沉淀。
 
         如果 query 触发了神识关键词，用 LLM 做深层意图理解，
-        主动判断城主真正需要什么记忆。
+        主动判断用户真正需要什么记忆。
         """
         if not query or not query.strip():
             return ""
@@ -1071,7 +1067,7 @@ class ZhijiMemoryProvider(MemoryProvider):
         domain_labels = {
             DOMAIN_SOUL: "【神魂根基】",
             DOMAIN_SKILL: "【技能沉淀】",
-            DOMAIN_PREF: "【城主偏好】",
+            DOMAIN_PREF: "【用户偏好】",
             DOMAIN_EVENT: "【事件记忆】",
             DOMAIN_GROWTH: "【进化印记】",
         }
@@ -1086,7 +1082,7 @@ class ZhijiMemoryProvider(MemoryProvider):
                 label = domain_labels.get(domain, f"【{domain}】")
                 lines = [f"{label} — 共{len(SeaStore.load_domain(domain))}条沉淀"]
                 if intention and domain == domains[0]:
-                    lines.append(f"  💡 城主意图: {intention[:50]}{'...' if len(intention) > 50 else ''}")
+                    lines.append(f"  💡 意图: {intention[:50]}{'...' if len(intention) > 50 else ''}")
                 for item in items:
                     summary = item.get("summary", "")
                     created = item.get("created_at", "")[:10]
@@ -1209,7 +1205,7 @@ class ZhijiMemoryProvider(MemoryProvider):
         return [
             {
                 "name": "sea_status",
-                "description": "查看谢家识海当前状态 — 各域沉淀数量、最新记忆、待确认新域",
+                "description": "查看识海当前状态 — 各域沉淀数量、最新记忆、待确认新域",
                 "parameters": {
                     "type": "object",
                     "properties": {

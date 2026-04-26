@@ -53,11 +53,11 @@
 
 ```
 识海 Zhiji Sea
-├── 神魂域 Soul Domain      — 核心身份文件 SOUL.md 的校验和保护
-├── 技能域 Skills Domain   — 沉淀的方法论、可复用技能
-├── 偏好域 Preferences      — 城主的工作习惯、审美偏好
-├── 事件域 Events Domain    — 项目进展、里程碑
-└── 进化域 Evolution       — 拓疆记录、成长里程碑
+├── 神魂域 Soul Domain          — 核心身份文件 SOUL.md 的校验和保护
+├── 技能域 Skills Domain        — 沉淀的方法论、可复用技能
+├── 偏好域 Preferences Domain   — 用户的工作习惯、审美偏好
+├── 事件域 Events Domain        — 项目进展、里程碑
+└── 进化域 Evolution Domain    — 拓疆记录、成长里程碑
 ```
 
 ---
@@ -98,78 +98,26 @@ LLM 炼化功能是**可选的**。不配置也能运行，只是无法做深度
 | `MINIMAX_API_KEY` | MiniMax Key | `xxx` |
 | `ANTHROPIC_API_KEY` | Anthropic Key | `sk-ant-xxx` |
 
-> 如果不配置，默认尝试 MiniMax-Text-01（城主自用配置）。
+> 如果不配置，识海将运行在规则模式（无 LLM 炼化）。
 
 ---
 
-## 六、与 OpenClaw / Celestia 的关系 | Relationship with OpenClaw & Celestia
+## 六、兼容性与关系 | Compatibility & Relationships
 
 | System | EN | 中文 |
 |---|---|---|
-| **OpenClaw** | Local experimental Agent — may crash, learns through failures | 本地实验性 Agent — 可能翻车，越挫越勇 |
-| **Celestia** | Cloud companion Agent — stable, long-term memory | 云端陪伴型 Agent — 稳定，长期记忆 |
-| **Zhiji** | Endogenous memory — connects everything, grows over time | 内生记忆系统 — 连接一切，持续生长 |
+| **Hermes Agent** | Native plugin — works out of the box | 原生插件 — 开箱即用 |
+| **Any OpenClaw Agent** | Can be adapted with provider interface | 可通过 provider 接口适配 |
+
+Zhiji is designed as a plugin for Hermes Agent. It can potentially be adapted for any agent framework with a memory provider interface.
 
 ---
 
-## 七、安装 | Installation
+## 📝 许可证 | License
 
-### 一键安装 | One-Command Install
-
-```bash
-git clone https://github.com/alvinxie365/zhiji-memory.git
-cd zhiji-memory
-bash install.sh
-```
-
-### 手动安装 | Manual Install
-
-1. Copy `__init__.py`, `plugin.yaml`, `zhiji_memory_provider.py` to `~/.hermes/plugins/zhiji_memory/`
-2. Add to `config.yaml`:
-   ```yaml
-   memory.provider: zhiji_memory
-   ```
-3. (Optional) Configure LLM API keys as environment variables
-4. Restart hermes-agent
-
----
-
-## 八、每日自备份 | Daily Self-Backup
-
-```bash
-# 添加 cron 任务（每天凌晨2点）
-0 2 * * * bash ~/.hermes/scripts/afu-daily-backup.sh
-```
-
-| EN | 中文 |
-|---|---|
-| Backup location: `~/Backup/afu-daily/` | 备份位置：`~/Backup/afu-daily/` |
-| 7-day rotation | 7天循环 |
-| Covers: Zhiji data, SOUL.md, config, memories, skills | 覆盖：识海数据、神魂文件、配置、记忆、技能 |
-
----
-
-## 九、建造里程碑 | Construction Milestones
-
-| Date | EN | 中文 |
-|---|---|---|
-| 2026-04-20 | Soul.md v3.0 officially opened | 神魂md v3.0 正式开辟识海 |
-| 2026-04-21 | Zhiji Memory plugin v2.0 released | 识海插件 v2.0 发布 |
-| 2026-04-21 | Bilingual edition published | 中英双语文档发布 |
-| 2026-04-21 | LLM config generalized (supports any OpenAI-compatible API) | LLM 配置通用化（支持任意 OpenAI-compatible API） |
-
----
-
-## 👤 关于 | About
-
-| EN | 中文 |
-|---|---|
-| Created by: 谢家·阿福X (Alvin Xie) | 作者：谢家·阿福X（Alvin Xie） |
-| Version: v1.1.0 | 版本：v1.1.0 |
-| GitHub: https://github.com/alvinxie365/zhiji-memory | GitHub：https://github.com/alvinxie365/zhiji-memory |
+MIT License
 
 ---
 
 **"错亦成技，技递于远，日进无疆，久弥精诚"**
-
 _"Error becomes skill; skill passes far; daily progress without limit; long-preserved sincerity."_

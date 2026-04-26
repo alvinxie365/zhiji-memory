@@ -4,8 +4,6 @@
 
 识海是 Hermes Agent 的内生记忆系统，替代旧的 RAG/向量搜索，以"神魂稳固 + 识浪涌动 + 沉淀生长"为核心，让 AI 在每次对话中自动成长。
 
-**由谢家打造 · https://feishu.cn/docx/Q0Uodru86oxCHAxoutmcIEJ6nJf**
-
 ---
 
 ## ✨ 特性
@@ -21,10 +19,10 @@
 
 ---
 
-## 📖 中英双语文档
+## 📖 文档
 
-> 📄 **中英双语完整建造手册：**
-> https://feishu.cn/docx/MKC0ddVyVoQEjsxU5koc6VR9nVc
+> 📄 **完整文档：**
+> https://github.com/alvinxie365/zhiji-memory/wiki
 
 ---
 
@@ -43,7 +41,8 @@ bash install.sh
 1. 把 `__init__.py`、`plugin.yaml`、`zhiji_memory_provider.py` 三个文件复制到 `~/.hermes/plugins/zhiji_memory/`
 2. 在 `config.yaml` 中添加：
    ```yaml
-   memory.provider: zhiji_memory
+   memory:
+     provider: zhiji_memory
    ```
 3. 重启 hermes-agent
 
@@ -64,10 +63,10 @@ bash install.sh
 
 ```
 识海
-├── 神魂域（soul）     — 核心身份文件 SOUL.md 的校验和保护
-├── 技能域（skills）   — 沉淀的方法论、可复用技能
-├── 偏好域（preferences）— 城主的工作习惯、审美偏好
-├── 事件域（events）   — 项目进展、里程碑
+├── 神魂域（soul）       — 核心身份文件 SOUL.md 的校验和保护
+├── 技能域（skills）     — 沉淀的方法论、可复用技能
+├── 偏好域（preferences）— 用户的工作习惯、审美偏好
+├── 事件域（events）     — 项目进展、里程碑
 └── 进化域（evolution） — 拓疆记录、成长里程碑
 ```
 
@@ -79,24 +78,23 @@ bash install.sh
 
 ```yaml
 # ~/.hermes/config.yaml
-memory.provider: zhiji_memory
+memory:
+  provider: zhiji_memory
 ```
 
 ### 每日自备份（推荐）
 
 ```bash
 # 添加 cron 任务，每天凌晨2点自动备份
-0 2 * * * bash ~/.hermes/scripts/afu-daily-backup.sh
+0 2 * * * bash ~/.hermes/scripts/zhiji-daily-backup.sh
 ```
 
 ---
 
 ## 👤 关于
 
-- **作者**：谢家·阿福X（Alvin Xie）
-- **来源**：谢家 Hermes Agent 的内生进化实验
-- **版本**：v1.1.0
-- **中英双语文档**：https://feishu.cn/docx/MKC0ddVyVoQEjsxU5koc6VR9nVc
+- **版本**：v1.2.0
+- **问题反馈**：https://github.com/alvinxie365/zhiji-memory/issues
 
 ---
 

@@ -1,4 +1,4 @@
-"""谢家识海插件 — Zhiji Sea Memory Provider for Hermes Agent
+"""识海插件 — Zhiji Sea Memory Provider for Hermes Agent
 
 每次对话结束，自动炼化行过留痕。
 识浪自然沉淀，新旧相连生长。
