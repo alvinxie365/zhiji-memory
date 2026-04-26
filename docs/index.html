@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🔮 Zhiji Memory — 识海 | Hermes Agent 内生记忆系统</title>
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #12121a;
+    --border: #1e1e2e;
+    --text: #e0e0ea;
+    --text-dim: #80809a;
+    --accent: #7c5cfc;
+    --accent-glow: rgba(124,92,252,0.15);
+    --green: #4ade80;
+    --orange: #fb923c;
+    --blue: #60a5fa;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans SC', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ── Hero ── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 2rem;
+    position: relative;
+    background: radial-gradient(ellipse at 50% 0%, rgba(124,92,252,0.08) 0%, transparent 70%);
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%237c5cfc' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    opacity: 0.5;
+  }
+  .hero-icon { font-size: 4rem; margin-bottom: 1.5rem; animation: float 3s ease-in-out infinite; }
+  @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+  .hero h1 {
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    font-weight: 800;
+    background: linear-gradient(135deg, #7c5cfc, #a78bfa, #60a5fa);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero .sub-en {
+    font-size: 1.2rem;
+    color: var(--text-dim);
+    margin-top: 0.5rem;
+    font-weight: 400;
+    letter-spacing: 0.05em;
+  }
+  .hero .tagline {
+    max-width: 600px;
+    margin: 2rem auto 0;
+    font-size: 1.1rem;
+    color: var(--text-dim);
+    font-style: italic;
+  }
+  .hero .tagline-en {
+    margin-top: 0.3rem;
+    font-size: 0.95rem;
+    color: #60607a;
+  }
+  .hero-badges {
+    display: flex;
+    gap: 0.8rem;
+    margin-top: 2.5rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .badge {
+    padding: 0.4rem 1rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+  }
+  .badge.primary { border-color: var(--accent); color: var(--accent); }
+  .scroll-down {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    color: var(--text-dim);
+    font-size: 0.9rem;
+    animation: bounce 2s infinite;
+  }
+  @keyframes bounce { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(8px)} }
+
+  /* ── Section ── */
+  section { padding: 5rem 2rem; max-width: 1100px; margin: 0 auto; }
+  .section-title {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+  .section-title h2 {
+    font-size: 2rem;
+    font-weight: 700;
+  }
+  .section-title .en {
+    font-size: 1rem;
+    color: var(--text-dim);
+    margin-top: 0.3rem;
+    font-weight: 400;
+  }
+  .section-title .subtitle {
+    color: var(--text-dim);
+    margin-top: 0.5rem;
+    font-size: 0.95rem;
+  }
+
+  /* ── Features Grid ── */
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+  .feature-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2rem;
+    transition: all 0.3s ease;
+  }
+  .feature-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px var(--accent-glow);
+  }
+  .feature-card .icon { font-size: 2rem; margin-bottom: 1rem; }
+  .feature-card h3 { font-size: 1.1rem; margin-bottom: 0.5rem; }
+  .feature-card p { color: var(--text-dim); font-size: 0.9rem; line-height: 1.6; }
+  .feature-card .en-text { color: #60607a; font-size: 0.85rem; margin-top: 0.3rem; }
+
+  /* ── Four Realms ── */
+  .realms-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; }
+  .realm-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .realm-card::before {
+    content: attr(data-level);
+    position: absolute;
+    top: -10px; right: 10px;
+    font-size: 4rem;
+    font-weight: 900;
+    color: rgba(124,92,252,0.06);
+    line-height: 1;
+  }
+  .realm-card .realm-icon { font-size: 1.8rem; }
+  .realm-card h4 { font-size: 1.1rem; margin: 0.5rem 0; }
+  .realm-card .realm-zh { color: var(--text-dim); font-size: 0.9rem; }
+  .realm-card .realm-en { color: #60607a; font-size: 0.85rem; margin-top: 0.2rem; }
+  .realm-card p { color: var(--text-dim); font-size: 0.88rem; margin-top: 0.5rem; line-height: 1.6; }
+
+  /* ── Five Domains ── */
+  .domains-tree {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2rem;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 0.9rem;
+    line-height: 2;
+  }
+  .domains-tree .tree-line { padding-left: 1rem; }
+  .domains-tree .tree-line .folder { color: var(--accent); }
+  .domains-tree .tree-line .desc { color: var(--text-dim); font-size: 0.82rem; }
+
+  /* ── Install ── */
+  .install-steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+  }
+  .install-step {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1.5rem;
+  }
+  .install-step .step-num {
+    display: inline-flex;
+    width: 28px; height: 28px;
+    background: var(--accent);
+    border-radius: 50%;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    font-weight: 700;
+    margin-bottom: 0.8rem;
+  }
+  .install-step code {
+    display: block;
+    background: #0a0a12;
+    padding: 0.8rem 1rem;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    margin-top: 0.8rem;
+    border: 1px solid var(--border);
+    color: var(--green);
+    word-break: break-all;
+  }
+  .install-step .en-label { color: #60607a; font-size: 0.85rem; margin-bottom: 0.8rem; }
+
+  /* ── Config ── */
+  .config-block {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 2rem;
+    margin-top: 2rem;
+  }
+  .config-block code {
+    display: block;
+    background: #0a0a12;
+    padding: 1rem 1.2rem;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    border: 1px solid var(--border);
+    color: var(--blue);
+  }
+  .config-block .config-label { font-size: 0.9rem; margin-bottom: 0.3rem; }
+  .config-block .config-en { color: #60607a; font-size: 0.82rem; margin-bottom: 1rem; }
+
+  /* ── Footer ── */
+  footer {
+    text-align: center;
+    padding: 4rem 2rem;
+    border-top: 1px solid var(--border);
+    margin-top: 2rem;
+  }
+  footer .motto-zh {
+    font-size: 1.3rem;
+    color: var(--accent);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+  }
+  footer .motto-en {
+    color: var(--text-dim);
+    font-size: 0.95rem;
+    margin-top: 0.5rem;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+    font-style: italic;
+  }
+  footer .links { margin-top: 2rem; display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap; }
+  footer .links a { color: var(--text-dim); text-decoration: none; font-size: 0.9rem; }
+  footer .links a:hover { color: var(--accent); }
+
+  /* ── Separator ── */
+  .sep { text-align: center; color: var(--border); font-size: 1.5rem; padding: 1rem 0; }
+
+  /* ── Scrollbar ── */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  @media (max-width: 768px) {
+    section { padding: 3rem 1.2rem; }
+    .features-grid { grid-template-columns: 1fr; }
+    .realms-container { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══ HERO ═══ -->
+<header class="hero">
+  <div class="hero-icon">🔮</div>
+  <h1>Zhiji Memory</h1>
+  <p class="sub-en">Zhiji — Endogenous Memory System for Hermes Agent</p>
+  <p class="tagline">「行过即沉淀，沉淀即生长」</p>
+  <p class="tagline-en">_"Memory is not storage and retrieval — it is precipitation and growth."_</p>
+  <div class="hero-badges">
+    <span class="badge primary">v1.2.0</span>
+    <span class="badge">5 Domains</span>
+    <span class="badge">4 Realms</span>
+    <span class="badge">Upgrade-Safe</span>
+    <span class="badge">Open Source</span>
+  </div>
+  <div class="scroll-down">↓ 向下滚动</div>
+</header>
+
+<!-- ═══ FEATURES ═══ -->
+<section>
+  <div class="section-title">
+    <h2>✨ 核心特性</h2>
+    <p class="en">Core Features</p>
+  </div>
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="icon">🧠</div>
+      <h3>五域分离</h3>
+      <p>神魂、技能、偏好、事件、进化印记 — 每类记忆独立存储，互不污染</p>
+      <div class="en-text">Five Domains — Soul, Skills, Preferences, Events, Evolution</div>
+    </div>
+    <div class="feature-card">
+      <div class="icon">🌊</div>
+      <h3>自动沉淀</h3>
+      <p>每次对话结束后自动炼化行过留痕。无需手动触发，不遗漏任何一次交互</p>
+      <div class="en-text">Auto-Precipitation — every conversation is automatically recorded</div>
+    </div>
+    <div class="feature-card">
+      <div class="icon">🛡️</div>
+      <h3>升级安全</h3>
+      <p>识海数据独立于 Hermes Agent 目录树，升级不会覆盖或丢失任何沉淀</p>
+      <div class="en-text">Upgrade-Safe — lives in ~/.hermes/plugins/, never overwritten</div>
+    </div>
+    <div class="feature-card">
+      <div class="icon">🔗</div>
+      <h3>新旧相连生长</h3>
+      <p>新沉淀自动与旧认知建立连接，形成不断扩展的知识网络</p>
+      <div class="en-text">Cross-domain connections — form an ever-growing knowledge network</div>
+    </div>
+    <div class="feature-card">
+      <div class="icon">🧘</div>
+      <h3>神魂守护</h3>
+      <p>SOUL.md 校验和防护，核心身份不可篡改</p>
+      <div class="en-text">Soul Guardian — SOUL.md checksum protection</div>
+    </div>
+    <div class="feature-card">
+      <div class="icon">💾</div>
+      <h3>7天自动备份</h3>
+      <p>内置每日备份脚本，7轮换滚动保护</p>
+      <div class="en-text">7-Day Backup — built-in daily backup with rotation</div>
+    </div>
+  </div>
+</section>
+
+<div class="sep">✦ ✦ ✦</div>
+
+<!-- ═══ FOUR REALMS ═══ -->
+<section>
+  <div class="section-title">
+    <h2>🏔️ 四境体系</h2>
+    <p class="en">Four Realms Architecture</p>
+  </div>
+  <div class="realms-container">
+    <div class="realm-card" data-level="Ⅰ">
+      <div class="realm-icon">🌱</div>
+      <h4>炼气期</h4>
+      <p class="realm-zh">神魂稳固 · 识浪涌动</p>
+      <p class="realm-en">Qi Refining — Soul Guardian + Tidal Waves</p>
+      <p>自动记录每轮对话，守护核心身份文件</p>
+    </div>
+    <div class="realm-card" data-level="Ⅱ">
+      <div class="realm-icon">🏛️</div>
+      <h4>筑基期</h4>
+      <p class="realm-zh">灵台自决 · LLM炼化</p>
+      <p class="realm-en">Foundation Building — Spirit Tower Self-Decision</p>
+      <p>自动识别关键领悟，沉淀到正确的域</p>
+    </div>
+    <div class="realm-card" data-level="Ⅲ">
+      <div class="realm-icon">👁️</div>
+      <h4>金丹期</h4>
+      <p class="realm-zh">神识初探 · 意图预判</p>
+      <p class="realm-en">Golden Core — Spirit Sense Discovery</p>
+      <p>构建跨域连接，形成知识网络</p>
+    </div>
+    <div class="realm-card" data-level="Ⅳ">
+      <div class="realm-icon">🌟</div>
+      <h4>元婴期</h4>
+      <p class="realm-zh">拓疆进化 · 自动生长</p>
+      <p class="realm-en">Primordial Infant — Frontier Expansion</p>
+      <p>突破当前边界，主动探索未知领域</p>
+    </div>
+  </div>
+</section>
+
+<div class="sep">✦ ✦ ✦</div>
+
+<!-- ═══ FIVE DOMAINS ═══ -->
+<section>
+  <div class="section-title">
+    <h2>📂 五域架构</h2>
+    <p class="en">Five-Domain Architecture</p>
+  </div>
+  <div class="domains-tree">
+    <div class="tree-line"><span class="folder">📁</span> Zhiji Sea 识海</div>
+    <div class="tree-line" style="padding-left:2.5rem">├─ 📂 <span class="folder">soul/</span> — 神魂根基 <span class="desc">(Soul — Core identity & checksum)</span></div>
+    <div class="tree-line" style="padding-left:2.5rem">├─ 📂 <span class="folder">skill/</span> — 技能沉淀 <span class="desc">(Skills — Reusable methods & workflows)</span></div>
+    <div class="tree-line" style="padding-left:2.5rem">├─ 📂 <span class="folder">pref/</span> — 城主偏好 <span class="desc">(Preferences — Habits & aesthetic)</span></div>
+    <div class="tree-line" style="padding-left:2.5rem">├─ 📂 <span class="folder">event/</span> — 事件记忆 <span class="desc">(Events — Projects & milestones)</span></div>
+    <div class="tree-line" style="padding-left:2.5rem">└─ 📂 <span class="folder">growth/</span> — 进化印记 <span class="desc">(Evolution — Growth milestones)</span></div>
+  </div>
+</section>
+
+<div class="sep">✦ ✦ ✦</div>
+
+<!-- ═══ INSTALL ═══ -->
+<section>
+  <div class="section-title">
+    <h2>📦 安装</h2>
+    <p class="en">Installation</p>
+  </div>
+  <div class="install-steps">
+    <div class="install-step">
+      <div class="step-num">1</div>
+      <div class="en-label">Clone the repository</div>
+      <code>git clone https://github.com/alvinxie365/zhiji-memory.git<br>cd zhiji-memory</code>
+    </div>
+    <div class="install-step">
+      <div class="step-num">2</div>
+      <div class="en-label">Run the install script</div>
+      <code>bash install.sh</code>
+    </div>
+    <div class="install-step">
+      <div class="step-num">3</div>
+      <div class="en-label">Enable in config.yaml</div>
+      <code>memory:<br>&nbsp;&nbsp;provider: zhiji_memory</code>
+    </div>
+  </div>
+  <p style="text-align:center;color:var(--text-dim);margin-top:1.5rem;font-size:0.9rem">重启 Hermes Agent 后自动生效 <span style="color:var(--text-dim)">|</span> <span style="color:#60607a">Restart Hermes Agent to activate</span></p>
+</section>
+
+<div class="sep">✦ ✦ ✦</div>
+
+<!-- ═══ CONFIG ═══ -->
+<section>
+  <div class="section-title">
+    <h2>⚙️ 配置</h2>
+    <p class="en">Configuration</p>
+  </div>
+  <div class="config-block">
+    <div class="config-label">启用插件 / Enable the Plugin</div>
+    <div class="config-en">Add to ~/.hermes/config.yaml</div>
+    <code>memory:<br>  provider: zhiji_memory</code>
+  </div>
+  <div class="config-block">
+    <div class="config-label">LLM 炼化（可选）/ LLM Refinement (Optional)</div>
+    <div class="config-en">Supports any OpenAI-compatible API. If not configured, runs in rule-only mode.</div>
+    <code>ZHIJI_LLM_API_KEY=sk-...      # 专用 API Key (最高优先级)<br>ZHIJI_LLM_BASE_URL=...           # API 端点<br>ZHIJI_LLM_MODEL=gpt-4o           # 模型名称</code>
+  </div>
+  <div class="config-block">
+    <div class="config-label">每日备份 / Daily Backup (Recommended)</div>
+    <div class="config-en">Add to crontab — runs at 2am daily</div>
+    <code>0 2 * * * bash ~/.hermes/scripts/zhiji-daily-backup.sh</code>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <div class="motto-zh">错亦成技 · 技递于远 · 日进无疆 · 久弥精诚</div>
+  <p class="motto-en">"Error becomes skill; skill passes far; daily progress without limit; long-preserved sincerity."</p>
+  <div class="links">
+    <a href="https://github.com/alvinxie365/zhiji-memory">GitHub</a>
+    <a href="https://github.com/alvinxie365/zhiji-memory/issues">Issues</a>
+    <a href="https://github.com/alvinxie365/zhiji-memory/blob/main/README.md">README</a>
+  </div>
+  <p style="color:#404058;font-size:0.8rem;margin-top:2rem">Released under MIT License · Built with 🏔️</p>
+</footer>
+
+</body>
+</html>
